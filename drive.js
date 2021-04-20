@@ -9,7 +9,7 @@ console.log('Mon dossier racine de stockage ; ' + ALPS_DRIVE);
 function createRootFolder(){
     const promise = fs.access(ALPS_DRIVE)
     .then(() => {
-        console.log('Le dossier exste deja');
+        console.log('Le dossier existe deja');
     }).catch(() => {
         return fs.mkdir(ALPS_DRIVE);
     })
@@ -25,10 +25,26 @@ function listFolder(path){
     return myResult
     }).catch((err) =>{
         if (err.code == 'ENOTDIR'){
-            console.log("je suis dans la fonction")
             return fs.readFile(path);
         }
         })
+}
+
+function createFolder(dir, name){
+    return fs.mkdir(path.join(dir, name)).then(()=>{
+        console.log('Le dossier à bien été créé')
+    }).catch(()=>{
+        console.log('Votre dossier na pas "été créé')
+    })
+}
+
+function deleteFolder(dir, name){
+    return fs.rm(path.join(dir, name), {recursive: true}).then(()=> {
+        console.log('Votre dossier à bien été supprimé')
+    }).catch(() => {
+        console.log(path)
+        console.log('Impossible de supprimer')
+    })
 }
 
 
@@ -36,5 +52,7 @@ function listFolder(path){
 module.exports = {
     createRootFolder: createRootFolder,
     listFolder: listFolder,
+    createFolder: createFolder,
+    deleteFolder: deleteFolder,
     ALPS_DRIVE: ALPS_DRIVE
 }
